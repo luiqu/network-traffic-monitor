@@ -10,20 +10,20 @@ def ping_host(host="8.8.8.8"):
 
     try:
         start_time = time.time()
-        output = subprocess.run(command, capture_output = subprocess.PIPE, check = False)
+        output = subprocess.run(command, capture_output = True, check = False)
         duration = round((time.time() - start_time) * 1000, 2)
 
         if output.returncode == 0:
             return duration
         return None
-    except Exception as e:
+    except (FileNotFoundError, OSError) as e:
         print(f"Error pinging host: {e}")
         return None
 
-    if __name__ == "__main__":
-        print("Testing...")
-        latency = ping_host("8.8.8.8")
-        if latency:
-            print(f"Ping successful, latency: {latency} ms")
-        else:
-            print("Ping unsuccessful. Host unreachable.")
+if __name__ == "__main__":
+    print("Testing...")
+    latency = ping_host("8.8.8.8")
+    if latency:
+        print(f"Ping successful, latency: {latency} ms")
+    else:
+        print("Ping unsuccessful. Host unreachable.")
